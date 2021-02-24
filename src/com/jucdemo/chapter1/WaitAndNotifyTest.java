@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ * wait()一直阻塞到被唤醒，底层是调用wait(0)
+ * wait(long timeout)阻塞指定的毫秒数后，自动苏醒。timeout为0一直阻塞到被唤醒，timeout小于0抛出IllegalArgumentException异常
+ * wait(Long timeout,int nanos) nanos在0<nanos<=999999的范围内会使timeout加1，nanos为0时相当于wait(long timeout)，其他范围抛出IllegalArgumentException异常
  * @author chenzw
  * @date 2021/2/24
  */
