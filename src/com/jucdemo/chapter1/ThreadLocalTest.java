@@ -1,7 +1,7 @@
 package com.jucdemo.chapter1;
 
 /**
- * ThreadLocal底层用来存数据的是Thread实例的ThreadLocalMap,存取值时通过当前的线程对象获取ThreadLocalMap，再用ThreadLocalMap来进行存取,所以只要不是同个线程，通过ThreadLocal获取的值就不一样，子线程无法获取父线程的值
+ * ThreadLocal底层用来存数据的ThreadLocalMap是Thread实例的成员threadLocals,存取值时首先获取当前线程的ThreadLocalMap成员对象，再用以ThreadLocal对象（本例localVariable）作为key对hreadLocalMap进行存取,所以只要不是同个线程，通过ThreadLocal获取的值就不一样，子线程无法获取父线程的值
  * @author chenzw
  * @date 2021/2/24
  */
