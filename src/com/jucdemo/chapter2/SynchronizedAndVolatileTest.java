@@ -46,7 +46,7 @@ public class SynchronizedAndVolatileTest {
             this.value = value;
         }
     }
-    //volatile保证线程安全
+    //volatile保证可见性，单步操作本身具备原子性，进而保证线程安全
     public static class ThreadSafeInteger2{
         private volatile int value;
 
@@ -57,5 +57,49 @@ public class SynchronizedAndVolatileTest {
         public void setValue(int value) {
             this.value = value;
         }
+    }
+
+    //value++分为读取、计算、写入三步，volatile不保证原子性，此处线程不安全
+    public static class ThreadNotSafeCount{
+        private volatile int value;
+
+        public int getValue() {
+            return value;
+        }
+
+        public void inc() {
+            this.value++;
+        }
+    }
+
+    //synchronized保证原子性和可见性，线程安全
+    public static class ThreadSafeCount{
+        private int value;
+
+        public synchronized int getValue() {
+            return value;
+        }
+
+        public synchronized void inc() {
+            this.value++;
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ThreadNotSafeCount threadNotSafeCount = new ThreadNotSafeCount();
+        ThreadSafeCount threadSafeCount = new ThreadSafeCount();
+        for(int i=0;i<1000;i++){
+            new Thread(()->{
+                threadNotSafeCount.inc();
+            }).start();
+        }
+        for(int i=0;i<1000;i++){
+            new Thread(()->{
+                threadSafeCount.inc();
+            }).start();
+        }
+        Thread.sleep(3000);
+        System.out.println(threadNotSafeCount.getValue());
+        System.out.println(threadSafeCount.getValue());
     }
 }
